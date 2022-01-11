@@ -1,6 +1,4 @@
-from game import Game
 from math import  inf
-from copy import deepcopy
 
 # Minimax search
 
