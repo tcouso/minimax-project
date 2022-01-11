@@ -122,5 +122,5 @@ class Game:
 
 if __name__ == "__main__":
     g = Game()
-    test_position = [["x", "x", "x"], ["o", "o", ""], ["", "", ""]]
-    print(g.is_terminal(test_position))
+    test_position = [["x", "o", "o"], ["", "x", ""], ["", "", ""]]
+    print(g.utility(test_position))
