@@ -80,8 +80,6 @@ class Game:
 
         elif x_count > o_count:
             return "o"
-        else:
-            return "ups"
 
     def utility(self, state, player="x"):
         # diagonal win
