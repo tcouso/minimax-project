@@ -2,38 +2,42 @@
 Class with all functions that formally define a game.
 """
 
+from copy import deepcopy
+import numpy as np
+import pickle
+from parameters import N
 
 class Game:
     def __init__(self) -> None:
         pass
 
     def horizontal_win(self, state):
-        for i in range(len(state)):
-            if state[i][0] != "":
-                if state[i][0] == state[i][1] == state[i][2]:
-                    return True
-        return False
+        for i in range(N):
+            token = state[i][0]
+            if state[i][0] == state[i][1] == state[i][2] and token != "":
+                return True, token
+        return False, token
 
     def vertical_win(self, state):
-        for i in range(len(state)):
-            if state[0][i] != "":
-                if state[0][i] == state[1][i] == state[2][i]:
-                    return True
-        return False
+        for i in range(N):
+            token = state[0][i]
+            if state[0][i] == state[1][i] == state[2][i] and token != "":
+                return True, token
+        return False, token
 
     def diagonal1_win(self, state):
         "Northwest to southeast win."
-        if state[0][0] == state[1][1] == state[2][2]:
-            if state[0][0] != "":
-                return True
-        return False
+        token = state[0][0]
+        if state[0][0] == state[1][1] == state[2][2] and token != "":
+            return True, token
+        return False, token
 
     def diagonal2_win(self, state):
         "Southwest to northeast win."
-        if state[2][0] == state[1][1] == state[0][2]:
-            if state[2][0] != "":
-                return True
-        return False
+        token = state[2][0]
+        if state[2][0] == state[1][1] == state[0][2] and token != "":
+            return True, token
+        return False, token
 
     def full_grid(self, state):
         for row in state:
@@ -51,15 +55,21 @@ class Game:
 
     def is_terminal(self, state):
         """Terminal test."""
+        diag1, _= self.diagonal1_win(state)
+        diag2, _= self.diagonal2_win(state)
+        hwin, _ = self.horizontal_win(state)
+        vwin, _ = self.vertical_win(state)
+        full = self.full_grid(state)
+
         if self.is_initial(state):
             return False
 
         elif (
-            self.horizontal_win(state)
-            or self.vertical_win(state)
-            or self.diagonal1_win(state)
-            or self.diagonal2_win(state)
-            or self.full_grid(state)
+            hwin
+            or vwin
+            or diag1
+            or diag2
+            or full
         ):
             return True
         else:
@@ -80,35 +90,39 @@ class Game:
 
         elif x_count > o_count:
             return "o"
-        else:
-            return "ups"
 
     def utility(self, state, player="x"):
-        # diagonal win
-        if state[0][0] == state[1][1] == state[2][2]:
-            return 1 if state[0][0] == player else -1
+        diag1, token_diag1 = self.diagonal1_win(state)
+        diag2, token_diag2 = self.diagonal2_win(state)
+        hwin, token_hwin = self.horizontal_win(state)
+        vwin, token_vwin = self.vertical_win(state)
 
-        elif state[2][0] == state[1][1] == state[0][2]:
-            return 1 if state[2][0] == player else -1
+        if not self.is_terminal(state):
+            return 0
 
-        # vertical/horizontal win
-        for i in range(len(state)):
-            if state[i][0] == state[i][1] == state[i][2]:
-                return 1 if state[i][0] == player else -1
+        elif diag1:
+            return 1 if token_diag1 == player else -1
 
-            elif state[0][i] == state[1][i] == state[2][i]:
-                return 1 if state[0][i] == player else -1
+        elif diag2:
+            return 1 if token_diag2 == player else -1
 
-        # no win
-        return 0
+        elif hwin:
+            return 1 if token_hwin == player else -1
+        
+        elif vwin:
+            return 1 if token_vwin == player else -1
+
+        else:
+            return 0  # tie
 
     def actions(self, state):
         """Returns the set of legal moves available for a state."""
         available_moves = set()
-        for row_index, row in enumerate(state):
-            for col_index, slot in enumerate(row):
-                if slot == "":
-                    available_moves.add((row_index, col_index))
+        if not self.is_terminal(state):    
+            for row_index, row in enumerate(state):
+                for col_index, slot in enumerate(row):
+                    if slot == "":
+                        available_moves.add((row_index, col_index))
         return available_moves
 
     def result(self, state, action):
@@ -116,13 +130,20 @@ class Game:
         Returns the resulting state of taking an action from an initial state.
         Action consists of making a move in a given coordinate
         """
+        # state_copy = deepcopy(state)  # very slow method
+        # state_copy = np.copy(state)   # even slower
+        state_copy = pickle.loads(pickle.dumps(state))
         (row_index, col_index) = action
-        token = self.to_move(state)
-        state[row_index][col_index] = token
-        return state
+        token = self.to_move(state_copy)
+        state_copy[row_index][col_index] = token
+        return state_copy
 
 
 if __name__ == "__main__":
     g = Game()
-    test_position = [["x", "x", "x"], ["o", "o", ""], ["", "", ""]]
-    print(g.is_terminal(test_position))
+    test_position = [
+        ["x", "o", ""], 
+        ["x", "x", "x"], 
+        ["o", "o", ""]
+        ]
+    print(g.actions(test_position))
