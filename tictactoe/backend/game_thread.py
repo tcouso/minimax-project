@@ -16,6 +16,8 @@ def game_thread_function():
         ["", "", ""],
         ["", "", ""]
         ]
+    print("TIC TAC TOE")
+    print_board(board)
     
     while not game.is_terminal(state=board):
         state = deepcopy(board)
