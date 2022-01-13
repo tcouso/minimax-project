@@ -2,20 +2,24 @@
 Class with all functions that formally define a game.
 """
 
+from copy import deepcopy
+import numpy as np
+import pickle
+from parameters import N
 
 class Game:
     def __init__(self) -> None:
         pass
 
     def horizontal_win(self, state):
-        for i in range(len(state)):
+        for i in range(N):
             token = state[i][0]
             if state[i][0] == state[i][1] == state[i][2] and token != "":
                 return True, token
         return False, token
 
     def vertical_win(self, state):
-        for i in range(len(state)):
+        for i in range(N):
             token = state[0][i]
             if state[0][i] == state[1][i] == state[2][i] and token != "":
                 return True, token
@@ -92,7 +96,11 @@ class Game:
         diag2, token_diag2 = self.diagonal2_win(state)
         hwin, token_hwin = self.horizontal_win(state)
         vwin, token_vwin = self.vertical_win(state)
-        if diag1:
+
+        if not self.is_terminal(state):
+            return 0
+
+        elif diag1:
             return 1 if token_diag1 == player else -1
 
         elif diag2:
@@ -105,15 +113,16 @@ class Game:
             return 1 if token_vwin == player else -1
 
         else:
-            return 0  # no win
+            return 0  # tie
 
     def actions(self, state):
         """Returns the set of legal moves available for a state."""
         available_moves = set()
-        for row_index, row in enumerate(state):
-            for col_index, slot in enumerate(row):
-                if slot == "":
-                    available_moves.add((row_index, col_index))
+        if not self.is_terminal(state):    
+            for row_index, row in enumerate(state):
+                for col_index, slot in enumerate(row):
+                    if slot == "":
+                        available_moves.add((row_index, col_index))
         return available_moves
 
     def result(self, state, action):
@@ -121,17 +130,20 @@ class Game:
         Returns the resulting state of taking an action from an initial state.
         Action consists of making a move in a given coordinate
         """
+        # state_copy = deepcopy(state)  # very slow method
+        # state_copy = np.copy(state)   # even slower
+        state_copy = pickle.loads(pickle.dumps(state))
         (row_index, col_index) = action
-        token = self.to_move(state)
-        state[row_index][col_index] = token
-        return state
+        token = self.to_move(state_copy)
+        state_copy[row_index][col_index] = token
+        return state_copy
 
 
 if __name__ == "__main__":
     g = Game()
     test_position = [
-        ["", "", "o"], 
-        ["", "o", ""], 
-        ["o", "", ""]
+        ["x", "o", ""], 
+        ["x", "x", "x"], 
+        ["o", "o", ""]
         ]
-    print(g.utility(test_position))
+    print(g.actions(test_position))

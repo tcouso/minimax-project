@@ -10,6 +10,7 @@ def print_board(board):
 
 
 def game_thread_function():
+    """ Command line interface for tic-tac-toe"""
     game = Game()
     board = [
         ["", "", ""],
@@ -23,14 +24,14 @@ def game_thread_function():
         state = deepcopy(board)
         if game.to_move(board) == "x":
             print("max moves")
-            max_move = minimax_search(game=game, state=state)
+            max_move = eval(input("Ingrese movimiento: "))
+            # max_move = minimax_search(game=game, state=state)
             board = game.result(state=board, action=max_move)
             print_board(board)
         elif game.to_move(board) == "o":
             print("min moves")
-            # here we need to recover a move from socket
-            min_move = eval(input("Ingrese movimiento: "))
-            # min_move = minimax_search(game=game, state=state)
+            # min_move = eval(input("Ingrese movimiento: "))
+            min_move = minimax_search(game=game, state=state)
             board = game.result(state=board, action=min_move)
             print_board(board)
 
