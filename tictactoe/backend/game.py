@@ -2,10 +2,9 @@
 Class with all functions that formally define a game.
 """
 
-from copy import deepcopy
-import numpy as np
 import pickle
 from parameters import N
+
 
 class Game:
     def __init__(self) -> None:
@@ -55,8 +54,8 @@ class Game:
 
     def is_terminal(self, state):
         """Terminal test."""
-        diag1, _= self.diagonal1_win(state)
-        diag2, _= self.diagonal2_win(state)
+        diag1, _ = self.diagonal1_win(state)
+        diag2, _ = self.diagonal2_win(state)
         hwin, _ = self.horizontal_win(state)
         vwin, _ = self.vertical_win(state)
         full = self.full_grid(state)
@@ -64,13 +63,7 @@ class Game:
         if self.is_initial(state):
             return False
 
-        elif (
-            hwin
-            or vwin
-            or diag1
-            or diag2
-            or full
-        ):
+        elif hwin or vwin or diag1 or diag2 or full:
             return True
         else:
             return False
@@ -108,7 +101,7 @@ class Game:
 
         elif hwin:
             return 1 if token_hwin == player else -1
-        
+
         elif vwin:
             return 1 if token_vwin == player else -1
 
@@ -118,7 +111,7 @@ class Game:
     def actions(self, state):
         """Returns the set of legal moves available for a state."""
         available_moves = set()
-        if not self.is_terminal(state):    
+        if not self.is_terminal(state):
             for row_index, row in enumerate(state):
                 for col_index, slot in enumerate(row):
                     if slot == "":
@@ -130,8 +123,6 @@ class Game:
         Returns the resulting state of taking an action from an initial state.
         Action consists of making a move in a given coordinate
         """
-        # state_copy = deepcopy(state)  # very slow method
-        # state_copy = np.copy(state)   # even slower
         state_copy = pickle.loads(pickle.dumps(state))
         (row_index, col_index) = action
         token = self.to_move(state_copy)
@@ -141,9 +132,5 @@ class Game:
 
 if __name__ == "__main__":
     g = Game()
-    test_position = [
-        ["x", "o", ""], 
-        ["x", "x", "x"], 
-        ["o", "o", ""]
-        ]
+    test_position = [["x", "o", ""], ["x", "x", "x"], ["o", "o", ""]]
     print(g.actions(test_position))
