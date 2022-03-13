@@ -1,6 +1,7 @@
-from math import  inf
+from math import inf
 
 # Minimax search
+
 
 def minimax_search(game, state):
     """Finds optimal move using minimax value"""
