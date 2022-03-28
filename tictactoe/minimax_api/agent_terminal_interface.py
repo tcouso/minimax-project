@@ -1,5 +1,4 @@
 from game import Game
-from minimax_search import minimax_search
 from alpha_beta_search import alpha_beta_search
 from copy import deepcopy
 
@@ -31,7 +30,6 @@ def game_thread_function():
         elif game.to_move(board) == "o":
             print("min moves")
             min_move = alpha_beta_search(game=game, state=state)
-            # min_move = minimax_search(game=game, state=state)
             board = game.result(state=board, action=min_move)
             print_board(board)
 

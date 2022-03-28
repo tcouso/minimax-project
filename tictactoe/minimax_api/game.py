@@ -123,7 +123,7 @@ class Game:
         Returns the resulting state of taking an action from an initial state.
         Action consists of making a move in a given coordinate
         """
-        state_copy = pickle.loads(pickle.dumps(state))
+        state_copy = pickle.loads(pickle.dumps(state))  # trick for faster copy
         (row_index, col_index) = action
         token = self.to_move(state_copy)
         state_copy[row_index][col_index] = token

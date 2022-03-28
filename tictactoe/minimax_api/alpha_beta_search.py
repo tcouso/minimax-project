@@ -3,7 +3,7 @@ from math import inf
 
 
 def alpha_beta_search(game, state):
-    """Finds optimal move using minimax value. Optimmizes search with alpha-beta prunning"""
+    """Finds optimal move using minimax value. Optimizes search with alpha-beta prunning"""
     player = game.to_move(state)
     if player == "x":
         value, move = max_value(game, state, -inf, inf)
