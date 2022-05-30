@@ -1,5 +1,6 @@
 .board {
     display: grid;
+    margin-left: 20px;
     grid-template-columns: repeat(3, 100px);
     grid-template-rows: repeat(3, 100px);
 
@@ -7,4 +8,5 @@
 
 .square {
     border-style: solid;
+    font-size: xx-large;
 }
