@@ -123,14 +123,19 @@ class Game:
         Returns the resulting state of taking an action from an initial state.
         Action consists of making a move in a given coordinate
         """
+        if action is None:
+            # full board scenatio; no actions available
+            return state
+
         state_copy = pickle.loads(pickle.dumps(state))  # trick for faster copy
         (row_index, col_index) = action
         token = self.to_move(state_copy)
         state_copy[row_index][col_index] = token
+
         return state_copy
 
 
 if __name__ == "__main__":
     g = Game()
-    test_position = [["x", "o", ""], ["x", "x", "x"], ["o", "o", ""]]
-    print(g.actions(test_position))
+    test_position = [["x", "o", ""], ["x", "x", "x"], ["o", "o", "o"]]
+    print(g.result(test_position))
