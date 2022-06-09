@@ -1,4 +1,3 @@
-import re
 from flask import Flask, json, request
 from flask_cors import CORS
 from alpha_beta_search import alpha_beta_search
