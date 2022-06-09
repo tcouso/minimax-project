@@ -17,7 +17,7 @@ def compute_move():
     agent_move = alpha_beta_search(game=game, state=board)
     new_board_raw = game.result(state=board, action=agent_move)
     new_board = new_board_raw[0] + new_board_raw[1] + new_board_raw[2]
-    print(new_board)
+    # print(new_board)
     response = json.dumps({"new-board": new_board})
     return response
 
