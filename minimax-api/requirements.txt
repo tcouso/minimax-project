@@ -18,10 +18,12 @@ defer==1.0.6
 distro==1.7.0
 docopt==0.6.2
 docutils==0.17.1
+gunicorn
 feedparser==6.0.8
 Flask==2.2.0
 Flask-Cors==3.0.10
 gitsome==0.8.0
+gunicorn==20.1.0
 hidpidaemon==18.4.6
 httplib2==0.20.2
 idna==3.3
