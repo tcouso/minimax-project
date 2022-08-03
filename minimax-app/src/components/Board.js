@@ -93,7 +93,7 @@ const Board = () => {
 				setSlots(new_board["new-board"]);
 						
 			} else {
-				alert("Invalid move")
+				alert("Invalid move!")
 			}
 		} catch (err) {
 			console.error(err.message);
