@@ -1,6 +1,7 @@
 ## Minimax-project
 
-Webapp of tic-tac-toe game with a minimax implementation. Algorithm optimization with alpha-beta prunning.
+Webapp of tic-tac-toe game with a minimax implementation. Algorithm optimization with alpha-beta prunning. Deployed version available at https://minimaxapp.herokuapp.com/
+
 ## Server execution
 ```python3 main.py```
 
