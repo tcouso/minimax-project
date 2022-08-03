@@ -5,7 +5,8 @@ import "./Styles.css";
 import Square from './Square';
 
 // urls
-const BASE = "http://127.0.0.1:5000/move";
+// const BASE = "http://127.0.0.1:5000/move";
+const BASE = "https://minimaxapi.herokuapp.com/move";
 
 
 
